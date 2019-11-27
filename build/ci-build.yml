@@ -19,4 +19,43 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: 'src/src.csproj'
+    projects: 'src/app/src.csproj'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'src/test/test.csproj'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '-r win-x86'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Subscription'
+    ConnectedServiceName: 'Microsoft Azure Internal Consumption(5fcb0d36-846f-4721-86e9-47f6c43494fd)'
+    subscriptionName: '5fcb0d36-846f-4721-86e9-47f6c43494fd'
+    location: 'West Europe'
+    templateLocation: 'Linked artifact'
+    csmFile: 'infra/resource-group.json'
+    deploymentMode: 'Incremental'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    ConnectedServiceName: 'Microsoft Azure Internal Consumption(5fcb0d36-846f-4721-86e9-47f6c43494fd)'
+    subscriptionName: '5fcb0d36-846f-4721-86e9-47f6c43494fd'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'jvwhorizonfinaldemo'
+    location: 'West Europe'
+    templateLocation: 'Linked artifact'
+    csmFile: 'infra/resources.json'
+    deploymentMode: 'Incremental'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Microsoft Azure Internal Consumption(5fcb0d36-846f-4721-86e9-47f6c43494fd)'
+    appType: 'webApp'
+    WebAppName: 'jvwhorizondemowebapp'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
