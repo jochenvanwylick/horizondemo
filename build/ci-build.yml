@@ -24,3 +24,25 @@ steps:
   inputs:
     command: 'test'
     projects: 'src/test/test.csproj'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Subscription'
+    ConnectedServiceName: 'Microsoft Azure Internal Consumption(5fcb0d36-846f-4721-86e9-47f6c43494fd)'
+    subscriptionName: '5fcb0d36-846f-4721-86e9-47f6c43494fd'
+    location: 'West Europe'
+    templateLocation: 'Linked artifact'
+    csmFile: 'infra/resource-group.json'
+    deploymentMode: 'Incremental'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    ConnectedServiceName: 'Microsoft Azure Internal Consumption(5fcb0d36-846f-4721-86e9-47f6c43494fd)'
+    subscriptionName: '5fcb0d36-846f-4721-86e9-47f6c43494fd'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'jvwhorizonfinaldemo'
+    location: 'West Europe'
+    templateLocation: 'Linked artifact'
+    csmFile: 'infra/resources.json'
+    deploymentMode: 'Incremental'
