@@ -20,3 +20,7 @@ steps:
   inputs:
     command: 'build'
     projects: 'src/app/src.csproj'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'src/test/test.csproj'
