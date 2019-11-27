@@ -20,7 +20,7 @@ namespace src.Controllers
 
         public IActionResult Index()
         {
-            throw new Exception("OOOPs something went wrong !")
+            throw new Exception("OOOPs something went wrong !");
             return View();
         }
 
