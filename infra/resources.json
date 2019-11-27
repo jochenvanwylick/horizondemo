@@ -36,6 +36,22 @@
                 "name": "jvwhorizondemowebapp",
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'jvwwebappserviceplan')]"
             }
+        },
+        {
+            "name": "jvwhorizonfinalappinsights",
+            "type": "Microsoft.Insights/components",
+            "apiVersion": "2015-05-01",
+            "location": "westeurope",
+            "tags": {
+                "displayName": "appInsights1 Component for webApp1"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'jvwhorizondemowebapp')]"
+            ],
+            "properties": {
+                "applicationId": "jvwhorizondemowebapp",
+                "application_Type": "web"
+            }
         }
     ],
     "outputs": {},
